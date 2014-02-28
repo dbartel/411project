@@ -26,7 +26,7 @@
       ; Reset dist
       (setf dist ())
     )
-    adj
+    (reverse adj)
   )
 )
 
@@ -48,7 +48,13 @@
   )
 )
 
-
+; Concept of relaxing edges is in both algorithms
+; (graph with distances) => (distances with paths)
+(defun relax-edge (node graph)
+  (let ( (distance (car node)) )
+    
+  )
+)
 
 ; Performs dijkstra's algorithm on a graph for node src
 ; Returns ( (NAME PATHCOST (PATH))
@@ -80,8 +86,21 @@
   )
 )
 
+
+
 ; Bellman-Ford Algorithm
 (defun bellman-ford(graph src)
+  (let (  (paths nil) )
+    ; Initialize Distances
+    ; (<NODE> (Adjacency)) => (<DISTANCE> <NODE> (Adjacency))
+    
+    (setf graph (mapcar (lambda (x) (if (equal (car x) src) (cons 0 x) (cons 999 x))) graph))
+    ; Relax Edges
+    (mapcar (lambda (x) (relax-edge x graph)) graph)
+
+    
+
+  )
 
 
 
