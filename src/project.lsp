@@ -53,10 +53,21 @@
 ; Performs dijkstra's algorithm on a graph for node src
 ; Returns ( (NAME PATHCOST (PATH))
 (defun dijkstra(graph src)
-  (let ( (paths nil) )
+  (let ( (paths nil) (visited nil) )
     ; Initial - set all distances to infinite
     (dolist (n graph)
       (if (not (equal src (car n))) (setf paths (cons (list (car n) 999) paths)))
+      ; Initialize Binary heap?japoijfiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      ;Yjhgrsg
+
+
+      (loop (unless (equal visited nil))
+	 
+      )
+
+
+
+
     )
 
     ; Main loop:
