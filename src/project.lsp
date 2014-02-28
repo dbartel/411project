@@ -51,7 +51,10 @@
 ; Concept of relaxing edges is in both algorithms
 ; (graph with distances) => (distances with paths)
 (defun relax-edge (node graph)
-  (let ( (distance (car node)) )
+  ; Examine outgoing edges
+  ; if (edge weight + node distance) < neighbor distance - update neighbor distance 
+
+  (let ( (node-distance (car node)) (neighbors (nth 2 node)))
     
   )
 )
