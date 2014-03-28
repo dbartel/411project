@@ -53,10 +53,18 @@
 (defun relax-edge (node graph)
   ; Examine outgoing edges
   ; if (edge weight + node distance) < neighbor distance - update neighbor distance 
-
+  (format t "~a~%" node)
   (let ( (node-distance (car node)) (neighbors (nth 2 node)))
+;    (dolist (nidst (car node))
+;      (if (< 
+;    )
     
   )
+)
+
+(defun tst ()
+;  (dijkstra *example-adj* 'A)
+  (bellman-ford *example-adj* 'A)
 )
 
 ; Performs dijkstra's algorithm on a graph for node src
@@ -65,8 +73,10 @@
   (let ( (paths nil) (visited nil) )
     ; Initial - set all distances to infinite
     (dolist (n graph)
-      (if (not (equal src (car n))) (setf paths (cons (list (car n) 999) paths)))
-      ; Initialize Binary heap?japoijfiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      (if (not (equal src (car n))) (setf paths (cons (list (car n) 999) paths)) (setf paths (cons (list (car n) 0) paths)))
+
+    )
+      ; Initialize Binary heap
       ;Yjhgrsg
 
 
@@ -77,7 +87,7 @@
 
 
 
-    )
+
 
     ; Main loop:
     ; Pick node with smallest path
@@ -99,7 +109,13 @@
     
     (setf graph (mapcar (lambda (x) (if (equal (car x) src) (cons 0 x) (cons 999 x))) graph))
     ; Relax Edges
-    (mapcar (lambda (x) (relax-edge x graph)) graph)
+    (format t "~a~%" graph)
+    (dolist (vertex graph)
+      (dolist (edge (nth 2 vertex))
+	(if (< (car (nth (position edge graph))) (+ edge (car vertex))) ()) ; if new distance is shorter, change it
+      )
+    )
+;    (mapcar (lambda (x) (relax-edge x graph)) graph)
 
     
 
