@@ -48,19 +48,9 @@
 (defun output-stats ()
 )
 
-;; "Main" function
-(defun compare-algorithms (n)
-  (let ( (g (init-random-graph n)) (src nil))
-    (setf src (nth (random n) g))
-    (bellman-ford g src)
-    (dijkstra g src)
-  )
-)
-
-
 (defun tst ()
-;  (dijkstra *example-adj* 'A)
-  (bellman-ford *example-adj* 'A)
+  (format t "DIJKSTRA: ~a~%BELLMAN-FORD: ~a~%" (dijkstra *example-med* 'A) (bellman-ford *example-med* 'A))
+  0
 )
 
 ;Initialize step is the same for Dijkstra and bellman-ford
@@ -93,35 +83,42 @@
   nil
 )
  
-
-
 ; Performs dijkstra's algorithm on a graph for node src
-; Returns ( (NAME PATHCOST (PATH))
 (defun dijkstra(graph src)
-  ; TODO fix Q init
-  (let ( (paths (init-distances graph src)) (Q nil))
-    (setf Q paths)
+  (let ( (paths (init-distances graph src)) (Q (init-distances graph src)))
     (loop while (not (eq Q nil))  with active = nil do
       (progn
        ; Pull current shortest distance from queue
 	(sort Q #'< :key #'second)
 	(setf active (car Q))
-
-	(dolist (n (get-vertice graph (car active)))
-	  ; Relax Edges
+	; Relax Edges
+	(loop for w in (second (get-vertice graph (car active))) with i = 0 do
+	     (progn
+	       (if (< (+ w (nth 1 active)) (get-distance paths (car (nth i paths))))
+		   (progn
+		     (setf (nth 1 (nth i paths)) (+ w (nth 1 active)))
+		     (setf (nth 2 (nth i paths)) (car active))
+		     (dolist (v Q)
+		       (if (eq (car v) (car (nth i paths))) 
+			   (progn
+			     (setf (nth (position v Q) Q) (nth i paths))
+			   )
+		       )
+		     )       
+		   )
+	       )
+	       (setf i (+ i 1))
+	     )
 	)
-
-
+;	(format t "ITERATION")
 	(setf Q (cdr Q))
-
       )
     )
 
-
+    paths
   )
 
 )
-
 
 ; Bellman-Ford Algorithm
 (defun bellman-ford(graph src)
