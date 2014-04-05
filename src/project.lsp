@@ -7,7 +7,16 @@
 ;;; GLOBAL VARIABLES
 ;; Adjacency Matrix: ( ('NODE-NAME (Distances)) )
 (defvar *example-adj* (list (list 'A '(0 1 1)) (list 'B '(1 0 2)) (list 'C '(1 2 0))))
+
+(defvar *example-med* (list (list 'A '(0 4 2 6))
+			    (list 'B '(999 0 999 1))
+			    (list 'C '(999 5 0 8))
+			    (list 'D '(999 999 999 0))
+		      )
+)
+
 (defvar *max-weight* 10)
+(defvar *INFINITY* 999)
 
 ;;; UTILITY FUNCTIONS
 
@@ -48,81 +57,88 @@
   )
 )
 
-; Concept of relaxing edges is in both algorithms
-; (graph with distances) => (distances with paths)
-(defun relax-edge (node graph)
-  ; Examine outgoing edges
-  ; if (edge weight + node distance) < neighbor distance - update neighbor distance 
-  (format t "~a~%" node)
-  (let ( (node-distance (car node)) (neighbors (nth 2 node)))
-;    (dolist (nidst (car node))
-;      (if (< 
-;    )
-    
-  )
-)
 
 (defun tst ()
 ;  (dijkstra *example-adj* 'A)
   (bellman-ford *example-adj* 'A)
 )
 
-; Performs dijkstra's algorithm on a graph for node src
-; Returns ( (NAME PATHCOST (PATH))
-(defun dijkstra(graph src)
-  (let ( (paths nil) (visited nil) )
-    ; Initial - set all distances to infinite
+;Initialize step is the same for Dijkstra and bellman-ford
+;Set the source distance to 0, everything else to infinity
+;Set the parent source to source, everything else to nil
+; Format: (NODE D[NODE] PARENT[NODE])
+(defun init-distances(graph src)
+  (let ((paths nil))
     (dolist (n graph)
-      (if (not (equal src (car n))) (setf paths (cons (list (car n) 999) paths)) (setf paths (cons (list (car n) 0) paths)))
-
+      (if (equal src (car n)) (setf paths (cons (list (car n) 0 src) paths)) (setf paths (cons (list (car n) *INFINITY* nil) paths)))
     )
-      ; Initialize Binary heap
-      ;Yjhgrsg
 
-
-      (loop (unless (equal visited nil))
-	 
-      )
-
-
-
-
-
-
-    ; Main loop:
-    ; Pick node with smallest path
-    ; Calculate shortest path
-    ; Mark as visited
-
-    paths
-    
+    (reverse paths)
   )
 )
 
+;gets d[vertice] 
+(defun get-distance(distances node)
+  (dolist (n distances)
+    (if (equal (car n) node) (return-from get-distance (nth 1 n)))
+  )
+  ; if not found return nil
+  nil
+)
+; get vertice from a graph
+(defun get-vertice (graph v)
+  (dolist (n graph)
+    (if (eq (car n) v) (return-from get-vertice n))
+  )
+  nil
+)
+ 
+
+
+; Performs dijkstra's algorithm on a graph for node src
+; Returns ( (NAME PATHCOST (PATH))
+(defun dijkstra(graph src)
+  ; TODO fix Q init
+  (let ( (paths (init-distances graph src)) (Q nil))
+    (setf Q paths)
+    (loop while (not (eq Q nil))  with active = nil do
+      (progn
+       ; Pull current shortest distance from queue
+	(sort Q #'< :key #'second)
+	(setf active (car Q))
+
+	(dolist (n (get-vertice graph (car active)))
+	  ; Relax Edges
+	)
+
+
+	(setf Q (cdr Q))
+
+      )
+    )
+
+
+  )
+
+)
 
 
 ; Bellman-Ford Algorithm
 (defun bellman-ford(graph src)
-  (let (  (paths nil) )
-    ; Initialize Distances
-    ; (<NODE> (Adjacency)) => (<DISTANCE> <NODE> (Adjacency))
-    
-    (setf graph (mapcar (lambda (x) (if (equal (car x) src) (cons 0 x) (cons 999 x))) graph))
-    ; Relax Edges
-    (format t "~a~%" graph)
-    (dolist (vertex graph)
-      (dolist (edge (nth 2 vertex))
-	(if (< (car (nth (position edge graph))) (+ edge (car vertex))) ()) ; if new distance is shorter, change it
-      )
+  (let ( (paths (init-distances graph src)))
+    (dolist (n graph)
+      (loop for w in (nth 1 n) with i = 0 do
+	   (progn 
+	     (if (< (+ w (get-distance paths (car n))) (get-distance paths (car (nth i paths))))
+		 (progn (setf (nth 1 (nth i paths)) (+ w (get-distance paths (car n)))) (setf (nth 2 (nth i paths)) (car n)))
+	     )
+	     (setf i (+ i 1))
+           )
+       )
+
     )
-;    (mapcar (lambda (x) (relax-edge x graph)) graph)
-
-    
-
+    paths
   )
-
-
-
 )
 
 
