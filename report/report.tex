@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 
 %%%% Title Page
-\title{CSCE 411 Project}
+\title{CSCE 411 Project Report}
 \author{Daniel Bartel}
 \date{}
 
@@ -11,11 +11,21 @@
 
 \begin{document}
   \maketitle
-  \section*{Introduction}
-  This is the introduction (good job :) )
+  \section*{Problem Description}
+  The chosen problem was the single-source shortest path problem. Given a weighted graph, the shortest path algorithm will compute the shortest paths from a given node to every other node in the graph.
+\\ \ \\
+Shortest path algorithms can have many real world applicatoins including:
+\begin{enumerate}
+  \item[\textbullet] Driving Directions
+  \item[\textbullet] AI Path finding
+  \item[\textbullet] Routing data through a network
+\end{enumerate}
   \section*{Algorithm Overview}
-    \subsection*{Dijkstra}
+  The two competing algorithms were Dijkstra's algorithm and the Bellman-Ford algorithm. Both algorithms use the idea of ``relaxing'' edges, which involves calculating approxmiate distances and replacing them with more accurate values until the correct solution is reached.
     \subsection*{Bellman-Ford}
+    \subsection*{Dijkstra}
+  \section*{Implementation}
+The algorithms were implemented in Common Lisp. In addition to the attached source code, the project is available on GitHub.
   \section*{Analysis}
   \section*{Conclusion}
 \end{document}
