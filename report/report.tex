@@ -23,9 +23,33 @@ Shortest path algorithms can have many real world applicatoins including:
   \section*{Algorithm Overview}
   The two competing algorithms were Dijkstra's algorithm and the Bellman-Ford algorithm. Both algorithms use the idea of ``relaxing'' edges, which involves calculating approxmiate distances and replacing them with more accurate values until the correct solution is reached.
     \subsection*{Bellman-Ford}
+    The Bellman-Ford algorithm was published in 1958 by Richard Bellman and in 1956 by Lester Ford Jr. The algorithm approaches the single source shortest path problem from a dynamic programming perspective. The algorithm executes the following steps: (d[u] is the distance to vertex u, w(u,v) is the weight of the edge (u,v), parent[u] is the parent node of [u] in a shortest path)
+    \begin{enumerate}
+      \item[1.] \textbf{Initialization}
+        \begin{enumerate}
+        \item[(a)] For all vertices that aren't the source: set the d[u] to infinity , and the parent[u] to nil
+        \item[(b)] Initialize the source d[s] = 0, and the parent[s] to s
+        \end{enumerate}
+      \item[2.] \textbf{For each vertext v in V: Relax Edges}\\
+        Relaxing edges works as follows: for an edge (u,v):\\
+         if $d[u] + w(u,v) < d[v]$ then\\
+            $d[v] = d[u] + w(u,v)$\\
+            parent[v] $= u$
+      \item[3.] Return the shortest paths
+    \end{enumerate}
+    The Bellman-Ford algorithm runs in $O(|V| * |E|)$ time. However, if given a directed acyclic graph, Bellman-Ford can run in $O(|V| + |E|)$ time if the graph is topologically sorted prior to execution of Bellman-Ford.
     \subsection*{Dijkstra}
+Dijkstra's algorithm was first published by Edsger Dijkstra in 1959. This algorithm is a greedy algorithm; the closest vertex will always be the vertex that is evaluated next. Dijkstra's algorithm executes in the following manner:
+    \begin{enumerate}
+      \item[1.] \textbf{Initialization} Initialization is the same as the Bellman-Ford algorithm with one exception: the all vertices are stored in a priority queue Q, where the priority of each vertex is its distance.
+      \item[2.] \textbf{While Q is not empty:} Extract the minimum node from Q, relax its edges\\
+        Relaxing edges operates in the same manner as the Bellman-Ford with one small addition. If a vertice's distance is changed, it also has its priority in Q decreased as the priorities in the queue are based on distance.
+      \item[3.] Return the shortest paths
+    \end{enumerate}
+The run time of Dijkstra's algorithm depends on the implementation of the priority queue. Using a simple, unsorted array, the run time is $O(V^2)$. If the queue is implemented in a binary heap, the running time will be $O(E \log V)$.  For this project, Dijkstra's algorithm was implemented using an unsorted array.
+Dijkstra's algorithm does not work for graphs with negatively weighted edges. This is because of the greedy nature of the algorithm. Once a vertex has been pulled from the priority queue, the algorithm assumes the minimum distance to that vertex has been found. With negatively weighted edges this may not always be the case. On the other hand, Bellman-Ford will work for negatively weighted graphs.
   \section*{Implementation}
-The algorithms were implemented in Common Lisp. In addition to the attached source code, the project is available on GitHub.
+The algorithms were implemented in Common Lisp. In addition to the attached source code, the project is available on GitHub: \textit{https://github.com/dbartel/411project}. 
   \section*{Analysis}
   \section*{Conclusion}
 \end{document}
