@@ -10,6 +10,9 @@
 ;; Adjacency Matrix: ( ('NODE-NAME (Distances)) )
 
 ;; These graphs are for testing purposes
+
+; RANDOM SEED MAKE SURE THIS IS LOADED 
+(defvar *random-state* (make-random-state t))
 (defvar *example-adj* (list (list 'A '(0 1 1)) (list 'B '(1 0 2)) (list 'C '(1 2 0))))
 
 (defvar *example-med* (list (list 'A '(0 4 2 6))
@@ -45,7 +48,7 @@
     (dotimes (i n)
       ; Generate n random distances
       (dotimes (i n)
-	(setf dist (cons (random *max-weight*) dist))
+	(setf dist (cons (+ (random *max-weight*) 1) dist))
       )
       ; Remove self-paths
       (setf (nth i dist) 0)
@@ -57,7 +60,29 @@
     (reverse adj)
   )
 )
+;; Generates graph with random edges
+;; Basically, gen random graph filled with edges, then start removing edges until there are e edges left
+(defun init-random-edge(v e)
+  (let ( (graph (init-random-graph v)) (remove-amt (- (* (- v 1) v) e)) (redge 0) (rvert 0) )
+    (dotimes (i remove-amt)
+      (setf rvert (random v))
+      (setf redge (random v))
+      (if (or (= (nth redge (nth 1  (nth rvert graph))) 0) (= (nth redge (nth 1  (nth rvert graph))) 999) )
+	  (if (= redge (- v 1)) (setf redge (- redge 1)) (setf redge (+ redge 1)))
+      )
 
+      (setf (nth redge (nth 1 (nth rvert graph))) 999)
+;      (format t "~a ~%" remove-amt)
+    )
+    graph
+  )
+
+
+)
+
+(defun tst()
+  (init-random-edge 5 3)
+)
 
 ;; Pretty Print the adjacency list
 (defun pprint-adjacency(matrix)
@@ -157,16 +182,29 @@
 ;;;;;;;;;;;;;;;;;;
 ;; Main Function
 ;;;;;;;;;;;;;;;;;;
-(defun main(&optional v)
-  (let ((test-graph nil))
-    (if (= v 0) (setf v 500))
+(defun main(&optional v  e)
+  (let ((test-vertice nil) (test-edges nil))
+    (if (equal v nil) (setf v 500))
+    (if (equal e nil) (setf e 400))
 
-    (setf test-graph (init-random-graph v))
-    (format t ">>>> Test graph generated with ~a vertices~%~%" v)
+    (setf test-vertice (init-random-graph v))
+    (setf test-edges (init-random-edge v e))
+
+    (format t ">>>> Test Graph Generated~%")
+    (format t "[Vertex Test]~%")
     (format t ">>>> Executing Bellman-Ford~%")
-    (time (bellman-ford test-graph 0))
+    (time (bellman-ford test-vertice 0))
     (format t ">>>> Executing Dijkstra~%")
-    (time (dijkstra test-graph 0))
+    (time (dijkstra test-vertice 0))
+
+    (format t "================================")
+    (format t "[Edge Test]~%")
+    (format t ">>>> Executing Bellman-Ford~%")
+    (time (bellman-ford test-edges 0))
+    (format t ">>>> Executing Dijkstra~%")
+    (time (dijkstra test-edges 0))	  
+
+
     nil
   )
 )

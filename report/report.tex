@@ -1,6 +1,6 @@
 %%%% Report for CSCE 411 Project
 \documentclass{article}
-\usepackage{amsmath}
+\usepackage{amsmath,pgfplots}
 
 %%%% Title Page
 \title{CSCE 411 Project Report}
@@ -50,6 +50,47 @@ The run time of Dijkstra's algorithm depends on the implementation of the priori
 Dijkstra's algorithm does not work for graphs with negatively weighted edges. This is because of the greedy nature of the algorithm. Once a vertex has been pulled from the priority queue, the algorithm assumes the minimum distance to that vertex has been found. With negatively weighted edges this may not always be the case. On the other hand, Bellman-Ford will work for negatively weighted graphs.
   \section*{Implementation}
 The algorithms were implemented in Common Lisp. In addition to the attached source code, the project is available on GitHub: \textit{https://github.com/dbartel/411project}. 
-  \section*{Analysis}
-  \section*{Conclusion}
+  \section*{Data}
+The running time for both of these algorithms depends on two things: the number of vertices and the number of edges in a graph. So, the execution time was measured while varying these two factors.\\
+The following data tables show the results of the tests. Timing was performed using the built in Common Lisp macro (time), measured in seconds.\\
+\begin{tabular}{|c|c|c|}
+\hline
+Vertex Total & Bellman-Ford & Dijkstra \\
+\hline
+100 & 0.01 & 0.004 \\
+\hline
+200 & 0.071 & 0.045 \\
+\hline
+400 & 0.548 & 0.399 \\
+\hline
+800 & 4.315 & 2.121 \\
+\hline
+1000 & 8.430 & 6.151 \\
+\hline
+\end{tabular}
+\\
+For the tests varying the number of edges, each graph had 500 vertices.\\
+\begin{tabular}{|c|c|c|}
+\hline
+Edge Total & Bellman-Ford & Dijkstra \\
+\hline
+100 & 1.075 & 0.738 \\
+\hline
+200 & 1.077 & 0.442 \\
+\hline
+400 & 1.077 & 0.615 \\
+\hline
+800 & 1.078 & 0.463 \\
+\hline
+1000 & 1.078 & 0.459 \\
+\hline
+\end{tabular}
+
+\section*{Conclusion}
+The ``real-world'' results supported the asymptotic analysis. Dijkstra's algorithm performed better than the Bellman-Ford algorithm in both situations. For both algorithms, the asymptotic analysis shows the run time growing with the number of vertices and the number of edges. The tests showed this as well.
+\\ \ \\
+Both of these algorithms can be improved in a number of ways which were not tested during this project. For example, Bellman-Ford can run in linear time if the graph is a topologically sorted DAG. Also, Dijkstra's run time can be improved if implementing a priority queue as a binary heap instead of an unsorted array. Even with these improvements though,  for positively weighted graphs, Dijkstra's algorithm will run faster than the Bellman-Ford algorithm. Bellman-Ford has the advantage of working with negatively weighted edges.
+\\ \ \\
+From an implementation perspective, neither algorithm was noticeably more difficult to write than the other. Both utilize the same basic steps, the main difference being the order in which the vertices are processed. So, if choosing between the two algorithms, the decision rests almost entirely on the existence of negatively weighted edges. 
+
 \end{document}
