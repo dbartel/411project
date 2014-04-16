@@ -52,7 +52,8 @@ Dijkstra's algorithm does not work for graphs with negatively weighted edges. Th
 The algorithms were implemented in Common Lisp. In addition to the attached source code, the project is available on GitHub: \textit{https://github.com/dbartel/411project}. 
   \section*{Data}
 The running time for both of these algorithms depends on two things: the number of vertices and the number of edges in a graph. So, the execution time was measured while varying these two factors.\\
-The following data tables show the results of the tests. Timing was performed using the built in Common Lisp macro (time), measured in seconds.\\
+The following data tables show the results of the tests. Timing was performed using the built in Common Lisp macro (time), measured in seconds. For the tests varying the number of edges, each graph had 500 vertices.\\
+\begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
 Vertex Total & Bellman-Ford & Dijkstra \\
@@ -67,10 +68,6 @@ Vertex Total & Bellman-Ford & Dijkstra \\
 \hline
 1000 & 8.430 & 6.151 \\
 \hline
-\end{tabular}
-\\
-For the tests varying the number of edges, each graph had 500 vertices.\\
-\begin{tabular}{|c|c|c|}
 \hline
 Edge Total & Bellman-Ford & Dijkstra \\
 \hline
@@ -85,7 +82,56 @@ Edge Total & Bellman-Ford & Dijkstra \\
 1000 & 1.078 & 0.459 \\
 \hline
 \end{tabular}
+\\ \ \\
+\textbf{Vertex Test Graph}\\
+\begin{tikzpicture}
+  \begin{axis} [
+    xlabel=Vertex,
+    ylabel=Time]
+    \addplot[color=black,mark=x] coordinates {
+      (100,0.01)
+      (200,0.071)
+      (400,0.548)
+      (800,4.315)
+      (1000,8.430)
+    };
 
+    \addplot[color=black,mark=*] coordinates {
+      (100,0.004)
+      (200,0.045)
+      (400,0.399)
+      (800,2.121)
+      (1000,6.151)
+    };
+    \legend{Bellman-Ford,Dijkstra}
+  \end{axis}
+\end{tikzpicture}
+\newpage
+\textbf{Edge Test Graph}\\
+\begin{tikzpicture}
+  \begin{axis} [
+    xlabel=Edges,
+    ylabel=Time]
+    \addplot[color=black,mark=x] coordinates {
+      (100,1.075)
+      (200,1.077)
+      (400,1.077)
+      (800,1.078)
+      (1000,1.078)
+    };
+
+    \addplot[color=black,mark=*] coordinates {
+      (100,0.738)
+      (200,0.442)
+      (400,0.615)
+      (800,0.463)
+      (1000,0.459)
+    };
+    \legend{Bellman-Ford,Dijkstra}
+  \end{axis}
+\end{tikzpicture}\\
+
+\end{center}
 \section*{Conclusion}
 The ``real-world'' results supported the asymptotic analysis. Dijkstra's algorithm performed better than the Bellman-Ford algorithm in both situations. For both algorithms, the asymptotic analysis shows the run time growing with the number of vertices and the number of edges. The tests showed this as well.
 \\ \ \\

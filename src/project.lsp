@@ -9,10 +9,13 @@
 
 ;; Adjacency Matrix: ( ('NODE-NAME (Distances)) )
 
+; RANDOM SEED MAKE SURE THIS IS LOADED IF USING INIT-RANDOM-GRAPH or INIT-RANDOM-EDGE
+(defvar *random-state* (make-random-state t))
+
+
 ;; These graphs are for testing purposes
 
-; RANDOM SEED MAKE SURE THIS IS LOADED 
-(defvar *random-state* (make-random-state t))
+
 (defvar *example-adj* (list (list 'A '(0 1 1)) (list 'B '(1 0 2)) (list 'C '(1 2 0))))
 
 (defvar *example-med* (list (list 'A '(0 4 2 6))
@@ -78,10 +81,6 @@
   )
 
 
-)
-
-(defun tst()
-  (init-random-edge 5 3)
 )
 
 ;; Pretty Print the adjacency list
@@ -182,6 +181,7 @@
 ;;;;;;;;;;;;;;;;;;
 ;; Main Function
 ;;;;;;;;;;;;;;;;;;
+
 (defun main(&optional v  e)
   (let ((test-vertice nil) (test-edges nil))
     (if (equal v nil) (setf v 500))
